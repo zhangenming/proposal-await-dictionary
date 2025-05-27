@@ -28,30 +28,36 @@ const obj = {
 };
 ```
 
+Solutions using existing syntax can be verbose:
+
+```javascript
+const obj = {
+  shape: getShape(),
+  color: getColor(),
+  mass: getMass(),
+};
+
+for (const key in obj) {
+  if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    await[key] = await obj[key];
+  }
+}
+```
+
 `Promise.all` helps, but is based on order, rather than names, which could lead to mixups:
 
 ```javascript
-const [
-  color,
-  shape,
-  mass,
-] = await Promise.all([
+const datas = await Promise.all([
   getShape(),
   getColor(),
   getMass(),
 ]);
-```
 
-Solutions using existing syntax can be verbose and _pollute_ the number of variables in scope:
-
-```javascript
-const shapeRequest = getShape();
-const colorRequest = getColor();
-const massRequest = getMass();
-
-const shape = await shapeRequest;
-const color = await colorRequest;
-const mass = await massRequest;
+const obj = {
+  shape: datas[0],
+  color: datas[1],
+  mass: datas[2],
+}
 ```
 
 ## Potential solutions
